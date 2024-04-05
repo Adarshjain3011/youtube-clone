@@ -1,31 +1,63 @@
 "use client"
 
-import Image from "next/image";
+import React from "react";
 
-import { UserButton } from "@clerk/nextjs";
+import { useEffect } from "react";
 
-import { auth,currentUser } from '@clerk/nextjs';
+import { useState } from "react";
 
-import NavBar from "@/components/common/navbar/Navbar";
+import axios from "axios";
 
-export default  async function Home() {
+import { getUserData } from "@/app/actions/user";
 
-  // const {userId, getToken} = auth();
+import { getAllPlaylists } from "./actions/playLists";
 
-  // const user = await currentUser();
+import { useContext } from "react";
+import { AppContext } from "./AppContext";
 
-  // console.log("curretn user ",user);
+
+export default function () {
+
+  const { userData, setUserData } = useContext(AppContext);
+
+
+  console.log("user data ", userData);
+
+
+  // async function getPlaylists() {
+
+  //   console.log("play list ke aadra ", userData);
+
+
+  //   try {
+
+  //     const response = await getAllPlaylists(userData.data.id);
+
+  //     console.log(response.data);
+
+  //   } catch (error: any) {
+
+  //     console.log(error.message);
+
+  //   }
+  // }
+
+
+
+  // useEffect(() => {
+
+
+  //   getPlaylists();
+
+
+  // }, []);
+
 
   return (
 
-    <div className="w-full min-h-screen ">
-      
 
-        <NavBar></NavBar>
-      {/* <Us */}
+    <div>hellow </div>
 
-    </div>
-  );
+  )
+
 }
-
-

@@ -1,76 +1,165 @@
+// npx prisma migrate dev --name Initialize the schema
+// psql -h localhost -d postgres -U postgres
+// npx prisma generate
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
+
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  
 }
 
-// npx prisma migrate dev --name Initialize the schema
 
-// psql -h localhost -d postgres -U postgres
-// npx prisma generate
 
 model User {
-  id             Int        @id @default(autoincrement())
-  email          String     @unique
-  userName       String     @unique
-  name           String?
-  password       String?
-  profileImage   String?
-  coverImage     String?
-  description    String?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @default(now())
-  viewedVideos   Video[]    @relation("Viewers")
-  likedVideos    Video[]    @relation("Likers")
-  dislikedVideos Video[]    @relation("Dislikers")
-  authoredVideos Video[]    @relation("Author")
-  Playlist       Playlist[]
-  Comment        Comment[]
+
+  id                        String            @id @default(cuid())
+  email                     String            @unique
+  userName                  String            @unique
+  name                      String
+  password                  String
+  profileImage             String?
+  coverImage                String?
+  description               String?
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @updatedAt
+  isVerified                Boolean           @default(false)
+  token                     String?
+  verifyTokenExpiry         DateTime?
+  ResetPasswordToken        String?
+  ResetTokenExpiry          DateTime?
+  videos                    Video[]
+  playlists                 Playlist[]
+  history                   viewsOnVideo[]
+  likedVideos               likesOnVideo[]
+  dislikedVideos            dislikesOnVideo[]
+  watchLater                watchLaterOnVideos[]
+  subscribers               User[]            @relation("UserFollows")
+  subscribesTo              User[]            @relation("UserFollows")
+  subscribersCount          Int               @default(0)
+  subscribesToCount         Int               @default(0)
+
 }
 
+
+
+
 model Video {
-  id              Int        @id @default(autoincrement())
-  userId          Int
-  duration        Int
+  id              String            @id @default(cuid())
+  userId          String
+  duration        String @default("")
   url             String
   description     String
   title           String
   thumbnail       String
-  isAgeRestricted Boolean    @default(false)
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @default(now())
-  tags            String[]
-  comments        Int[]
-  viewers         User[]     @relation("Viewers")
-  likers          User[]     @relation("Likers")
-  dislikers       User[]     @relation("Dislikers")
-  author          User       @relation("Author", fields: [userId], references: [id])
-  playlists       Playlist[] @relation("Videos")
-  Comment         Comment[]
+  isAgeRestricted Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  tags            String[]          @default([])
+  user            User              @relation(fields: [userId], references: [id])
+  viewsCount      Int               @default(0)
+  likesCount      Int               @default(0)
+  dislikesCount   Int               @default(0)
+  countWatchLater Int                @default(0)
+  playlists       PlaylistVideo[]
+  views           viewsOnVideo[]
+  likes           likesOnVideo[]
+  dislikes        dislikesOnVideo[]
+  watchLaterVideo      watchLaterOnVideos[]
+  
 }
+
+
+
 
 model Playlist {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String          @id @default(cuid())
+  userId      String
   title       String
-  description String
-  createdAt   DateTime
-  updatedAt   DateTime
-  author      User     @relation(fields: [userId], references: [id])
-  videos      Video[]  @relation("Videos")
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  user        User            @relation(fields: [userId], references: [id])
+  videos      PlaylistVideo[]
 }
 
-model Comment {
-  id      Int    @id @default(autoincrement())
-  videoId Int
-  content String
-  userId  Int
+
+
+
+model PlaylistVideo {
+
+
   video   Video  @relation(fields: [videoId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+  videoId String
+
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId String
+
+  @@id([videoId, playlistId])
+  
 }
+
+
+
+
+
+model viewsOnVideo {
+  video   Video    @relation(fields: [videoId], references: [id])
+  videoId String
+  viewdAt DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+
+  @@id([videoId, userId])
+}
+
+
+
+
+
+
+model likesOnVideo {
+  video   Video    @relation(fields: [videoId], references: [id])
+  videoId String
+  likedAt DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+
+  @@id([videoId, userId])
+}
+
+
+
+
+
+model dislikesOnVideo {
+  video      Video    @relation(fields: [videoId], references: [id])
+  videoId    String
+  dislikedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@id([videoId, userId])
+}
+
+
+
+model watchLaterOnVideos {
+
+   video   Video    @relation(fields: [videoId], references: [id])
+  videoId String
+  watchedAt DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+
+  @@id([videoId, userId])
+
+
+}
+
+
 
 
 

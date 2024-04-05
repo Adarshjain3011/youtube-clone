@@ -1,9 +1,18 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { ClerkProvider } from '@clerk/nextjs'
+import ThemeProvider from "./AppContext";
 
+import toast, { Toaster } from "react-hot-toast";
+
+// import { ClerkProvider } from '@clerk/nextjs'
+import NavBar from "@/components/common/navbar/Navbar";
+
+import { SideBar } from "@/constant/sidebarComponents/sideBarCompo"
+
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +28,47 @@ export default function RootLayout({
 }>) {
   return (
 
-    <ClerkProvider>
+    <html lang="en">
 
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
+      <body className={inter.className}>
 
-    </ClerkProvider>
-    
+        <ThemeProvider>
+
+          {/* <NavBar /> */}
+
+          <Toaster />
+
+          <div className="flex flex-col bg-black">
+
+            <NavBar />
+
+            <div className="flex justify-between w-full ">
+
+              <div className="relative ">
+
+                <SideBar />
+
+              </div>
+
+              <div className=" overflow-x-hidden w-full">
+
+                <NextTopLoader />
+                
+                {children}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </ThemeProvider>
+
+      </body>
+
+    </html>
+
   );
 }
+
+
