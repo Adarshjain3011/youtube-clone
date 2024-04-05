@@ -4,14 +4,10 @@ import { AppContext } from "../AppContext";
 
 import { useRouter } from "next/navigation";
 
-// import NavBar from "@/components/common/navbar/Navbar";
-
 import { navbar } from "@/constant/icons/icons";
 import { TbPlaylistAdd } from "react-icons/tb";
 
-import { useEffect } from "react";
-
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { getTime } from "@/helpers/getTimeFromDate";
 
@@ -24,9 +20,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { TbLockCheck } from "react-icons/tb";
+
 import { getAllVideo } from "../actions/createVideo";
 
-
+import PlaylistButton from "@/components/buttons/createPlaylist/createPlaylistButton";
 
 
 
@@ -121,39 +118,6 @@ export function VideoDisplayReal() {
         }
 
     }
-
-
-
-    async function createPlaylistHandler() {
-
-        try {
-
-
-            if (!isLoggedIn) {
-
-                router.push("/login");
-
-            }
-
-            const response = await createPlaylist(titleText, userData.data.id);
-
-
-            console.log("created playlist", response.data);
-
-            setAllPlaylistData([...playlistData, response.data]);
-
-            setPlayListButtonClicked(false);
-
-
-        } catch (error: any) {
-
-
-            console.log(error.message);
-
-        }
-    }
-
-
 
 
     async function getPlaylists() {
@@ -271,10 +235,6 @@ export function VideoDisplayReal() {
     useEffect(() => {
 
 
-        console.log("helow");
-
-        // getAllVideo()
-
         getPlaylists();
 
 
@@ -292,7 +252,7 @@ export function VideoDisplayReal() {
                     <div className={`flex relative flex-col gap-2 mb-11 ${threeLineButtonCliked === false ? "pl-1" : "pl-6"}`}>
 
                         <div className={`realtive`} key={data.id}
-                        
+
                             onMouseOver={() => handleMouseEnter(index)}
 
                             onMouseLeave={() => setHoveredVideoIndex(-1)}
@@ -302,7 +262,7 @@ export function VideoDisplayReal() {
                         >router.push(`/videoPlay/${data.id}`)
                             {hoveredVideoIndex === index ? (
 
-                                <div className={`rounded-xl ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[180px] pl-12"} `}>
+                                <div className={`rounded-xl ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px] "} `}>
                                     <video
                                         controls
                                         autoPlay
@@ -346,6 +306,8 @@ export function VideoDisplayReal() {
 
 
                             <div ref={videoRef} className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
+
+                                {/* watch later  */}
 
                                 <div className="flex justify-between hover:bg-red-600 p-1 rounded-lg pt-2" onClick={() => watchLater(data.id)}>
 
@@ -401,22 +363,13 @@ export function VideoDisplayReal() {
 
                                             </div>
 
+                                            {/* plylist button  */}
 
-                                            <div className="flex flex-col justify-center items-center gap-4 sticky bottom-0 border-t-2 border-gray-700 pt-3">
-
-                                                <div className="w-full h-9 rounded-lg">
-
-                                                    <input type="text" placeholder="enter text" className="w-full h-full rounded-lg pl-3 p-2 bg-slate-900 text-white border" onChange={(e) => setTitleText(e.target.value)}></input>
-
-                                                </div>
-
-                                                <div className="text border rounded-md p-1">
-
-                                                    <p className="text-center text-white font-bold" onClick={() => createPlaylistHandler()}>create Playlist</p>
-
-                                                </div>
-
-                                            </div>
+                                            <PlaylistButton
+                                            
+                                                isPlaylistButtonClicked={isPlaylistButtonClicked}
+                                                setPlayListButtonClicked={setPlayListButtonClicked}
+                                            />
 
                                         </div>
 
@@ -431,7 +384,7 @@ export function VideoDisplayReal() {
 
                                 }}>
 
-                                    <TbPlaylistAdd className="text-white text-xl "/>
+                                    <TbPlaylistAdd className="text-white text-xl " />
 
                                     <p className="text-white text-xs font-semibold text-start px-5 mb-2">Playlists</p>
 
@@ -466,7 +419,7 @@ export function VideoDisplayReal() {
 
                             </div>
 
-                            
+
 
                             <div>
 
