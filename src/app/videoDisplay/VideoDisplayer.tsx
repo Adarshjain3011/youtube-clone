@@ -11,9 +11,7 @@ import { useEffect, useRef } from "react";
 
 import { getTime } from "@/helpers/getTimeFromDate";
 
-import { createWatchLater } from "@/app/actions/watchLater";
-
-import { createPlaylist, getAllPlaylists, addVideoToPlaylist, deleteVideoFromPlaylist } from "../actions/playLists";
+import { getAllPlaylists, addVideoToPlaylist, deleteVideoFromPlaylist } from "../actions/playLists";
 
 import toast from "react-hot-toast";
 
@@ -140,9 +138,6 @@ export function VideoDisplayReal() {
                 else {
 
                     toast.success("video added successfully");
-
-
-                    //  playlistData, setAllPlaylistData
 
                     setAllPlaylistData([...playlistData, response.data]);
 
@@ -271,17 +266,6 @@ export function VideoDisplayReal() {
 
 
                             <div ref={videoRef} className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
-
-                                {/* watch later  */}
-
-                                {/* <div className="flex justify-between hover:bg-red-600 p-1 rounded-lg pt-2" onClick={() => watchLater(data.id)}>
-
-                                    <navbar.MdOutlineWatchLater className="text-white text-xl" />
-
-                                    <p className="text-white text-xs font-semibold text-start px-5">Watch Later</p>
-
-
-                                </div> */}
 
                                 <WatchLaterButton videoId={data.id} isLoggedIn = {isLoggedIn} userId = {userData.data.id}/>
 
