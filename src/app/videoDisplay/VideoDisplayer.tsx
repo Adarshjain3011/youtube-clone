@@ -25,6 +25,8 @@ import { getAllVideo } from "../actions/createVideo";
 
 import PlaylistButton from "@/components/buttons/createPlaylist/createPlaylistButton";
 
+import WatchLaterButton from "@/components/buttons/WatchLater/WatchLaterButton";
+
 
 
 export function VideoDisplayReal() {
@@ -88,46 +90,9 @@ export function VideoDisplayReal() {
 
 
 
-
-    async function watchLater(videoId: string) {
-
-        try {
-
-            console.log("video id is", videoId);
-
-            if (!isLoggedIn) {
-
-
-                router.push("/login");
-
-            }
-
-            console.log("user data ", userData);
-
-            const newWatchLater = await createWatchLater(videoId, userData.data.id);
-
-            console.log(newWatchLater.data);
-
-            toast.success("video added to the watch list successfully");
-
-
-        } catch (error: any) {
-
-            console.log(error.message);
-
-        }
-
-    }
-
-
     async function getPlaylists() {
 
-        // console.log("play list ke aadra ",userData);
-
-
         try {
-
-            // await verifyUserWithToken();
 
             const response = await axios.get(`/api/playlist/getAllPlaylist`);
 
@@ -309,14 +274,17 @@ export function VideoDisplayReal() {
 
                                 {/* watch later  */}
 
-                                <div className="flex justify-between hover:bg-red-600 p-1 rounded-lg pt-2" onClick={() => watchLater(data.id)}>
+                                {/* <div className="flex justify-between hover:bg-red-600 p-1 rounded-lg pt-2" onClick={() => watchLater(data.id)}>
 
                                     <navbar.MdOutlineWatchLater className="text-white text-xl" />
 
                                     <p className="text-white text-xs font-semibold text-start px-5">Watch Later</p>
 
 
-                                </div>
+                                </div> */}
+
+                                <WatchLaterButton videoId={data.id} isLoggedIn = {isLoggedIn} userId = {userData.data.id}/>
+
 
                                 {/* when the vertical button clcicked */}
 
@@ -366,7 +334,7 @@ export function VideoDisplayReal() {
                                             {/* plylist button  */}
 
                                             <PlaylistButton
-                                            
+
                                                 isPlaylistButtonClicked={isPlaylistButtonClicked}
                                                 setPlayListButtonClicked={setPlayListButtonClicked}
                                             />
