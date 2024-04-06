@@ -139,7 +139,7 @@ export function SideBar() {
     return (
 
 
-        <div className={` bg-black mt-14 ${threeLineButtonCliked === true ? "pl-3 w-[150px]" : "w-[70px]"} `}>
+        <div className={` bg-black mt-14 h-screen overflow-y-scroll no-scrollbar ${threeLineButtonCliked === true ? "pl-3 w-[150px]" : "w-[70px]"} `}>
 
 
             <div className=" flex flex-col justify-center items-baseline gap-3">

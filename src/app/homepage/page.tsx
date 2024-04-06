@@ -15,7 +15,6 @@ import { useContext } from "react";
 
 import { VideoDisplayReal } from "../videoDisplay/VideoDisplayer";
 
-
 import { SideBar } from "@/constant/sidebarComponents/sideBarCompo";
 
 import {getAllVideo} from "@/app/actions/createVideo";
@@ -23,13 +22,6 @@ import {getAllVideo} from "@/app/actions/createVideo";
 export default function () {
 
     const { userData, setUserData, isLoggedIn, setIsLoggedIn,allVideos,setAllVideos } = useContext(AppContext);
-
-    // const pathame = window.location.pathname;
-
-    // console.log("pathname is :",pathame);
-
-    // console.log(pathame.includes("/ho"));
-
 
     async function fetchAllVideos(){
 
@@ -64,7 +56,7 @@ export default function () {
 
         <div className="relative w-full">
 
-            <div className=" relative flex flex-wrap gap-4 overflow-x-hidden w-full">
+            <div className=" relative flex flex-wrap gap-4 overflow-x-hidden w-full overflow-y-auto">
 
                 <VideoDisplayReal></VideoDisplayReal>
 

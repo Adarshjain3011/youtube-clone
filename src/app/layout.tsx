@@ -44,13 +44,13 @@ export default function RootLayout({
 
             <div className="flex justify-between w-full ">
 
-              <div className="relative ">
+              <div className="relative">
 
                 <SideBar />
 
               </div>
 
-              <div className=" overflow-x-hidden w-full">
+              <div className=" overflow-x-hidden overflow-y-scroll no-scrollbar w-full ">
 
                 <NextTopLoader />
                 

@@ -25,6 +25,8 @@ import PlaylistButton from "@/components/buttons/createPlaylist/createPlaylistBu
 
 import WatchLaterButton from "@/components/buttons/WatchLater/WatchLaterButton";
 
+import Video from "@/components/ui/video/CommonVideo";
+
 
 
 export function VideoDisplayReal() {
@@ -75,19 +77,6 @@ export function VideoDisplayReal() {
     }
 
 
-
-    function handleClickOutside(event: any) {
-
-        if (videoRef.current && !videoRef.current.contains(event.target)) {
-
-            setHorizontalThreeButtonCliked(-1);
-
-        }
-
-    }
-
-
-
     async function getPlaylists() {
 
         try {
@@ -105,6 +94,22 @@ export function VideoDisplayReal() {
 
         }
     }
+
+    
+
+    function handleClickOutside(event: any) {
+
+        if (videoRef.current && !videoRef.current.contains(event.target)) {
+
+            setHorizontalThreeButtonCliked(-1);
+
+        }
+
+    }
+
+
+
+
 
 
 
@@ -192,6 +197,8 @@ export function VideoDisplayReal() {
 
     }, []);
 
+
+
     useEffect(() => {
 
 
@@ -223,14 +230,10 @@ export function VideoDisplayReal() {
                             {hoveredVideoIndex === index ? (
 
                                 <div className={`rounded-xl ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px] "} `}>
-                                    <video
-                                        controls
-                                        autoPlay
-                                        className="relative w-full h-full bg-cover"
-                                        style={{ width: "100%", height: "100%" }}
-                                    >
-                                        <source src={data?.url} type="video/mp4" className="w-full h-full bg-cover" />
-                                    </video>
+
+
+                                    <Video videoUrl={data.url}/>
+
 
                                 </div>
 
@@ -265,7 +268,7 @@ export function VideoDisplayReal() {
                         {horizontalThreeButtonCliked === index && (
 
 
-                            <div ref={videoRef} className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
+                            <div  className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
 
                                 <WatchLaterButton videoId={data.id} isLoggedIn = {isLoggedIn} userId = {userData.data.id}/>
 
@@ -343,6 +346,7 @@ export function VideoDisplayReal() {
                                 </div>
 
                             </div>
+
                         )}
 
                         <div className="flex justify-between">

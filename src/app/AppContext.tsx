@@ -33,6 +33,8 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const [currentPlayingVideoUser,setCurrentPlayingVideoUser] = useState(null);
 
     const [playlistData,setAllPlaylistData] = useState(null);
+
+    const [historyData, setHistroyData] = useState(null);
     
 
 
@@ -40,6 +42,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     async function verifyUserWithToken() {
 
         try {
+
+            if(isLoggedIn){
+
+                return;
+            }
 
             const response = await axios.get("/api/auth/getDataFromToken");
 
@@ -136,7 +143,8 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         currentPlayingVideo,
         setCurrentPlayingVideo,
         playlistData,
-        setAllPlaylistData
+        setAllPlaylistData,
+        historyData, setHistroyData
 
     };
 

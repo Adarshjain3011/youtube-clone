@@ -50,12 +50,18 @@ export default function SignupPage() {
                 return;
 
             }
+            if(newUser?.data?.status === 400){
+
+
+                router.push("/login");
+                
+            }
 
             console.log("new user at log in ",newUser.data);
 
             setUserData(newUser.data);
 
-            setIsLoggedIn(true);
+            // setIsLoggedIn(true);
             
 
             router.push("/homepage");

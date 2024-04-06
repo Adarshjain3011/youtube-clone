@@ -24,35 +24,6 @@ export default function () {
   console.log("user data ", userData);
 
 
-  // async function getPlaylists() {
-
-  //   console.log("play list ke aadra ", userData);
-
-
-  //   try {
-
-  //     const response = await getAllPlaylists(userData.data.id);
-
-  //     console.log(response.data);
-
-  //   } catch (error: any) {
-
-  //     console.log(error.message);
-
-  //   }
-  // }
-
-
-
-  // useEffect(() => {
-
-
-  //   getPlaylists();
-
-
-  // }, []);
-
-
   return (
 
 
@@ -61,3 +32,6 @@ export default function () {
   )
 
 }
+
+
+
