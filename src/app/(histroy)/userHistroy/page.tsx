@@ -207,7 +207,7 @@ export default function userHistroy() {
                             historyData?.map((data: any, index: any) => (
 
 
-                                <div className="relative w-full h-[100px] flex justify-between items-center  hover:border hover:rounded-lg hover:bg-gray-700">
+                                <div className="relative w-full h-[100px] flex justify-between items-center  hover:border hover:rounded-lg hover:bg-gray-700" onClick={()=>router.push(`videoPlay/${data?.videoId}`)}>
 
 
                                     <div className="relative w-full h-full flex gap-2 justify-start items-center ">
