@@ -243,19 +243,6 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
                         </div>
 
-                        <div className="border-2 rounded-xl">
-
-                            <input
-                                {...register("tags")}
-
-                                placeholder="Enter the tags for the video  "
-                                className="p-2 w-full rounded-xl bg-black font-bold outline-2 text-white"
-                            />
-
-                        </div>
-
-
-
                         <div className="flex border rounded-xl p-2 justify-between items-center">
 
                             <p className="text-white text-start font-bold pl-2">is Age Restricted</p>

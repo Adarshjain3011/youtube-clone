@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { AppContext } from "@/app/AppContext";
 
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface FormValues {
 
@@ -18,10 +19,9 @@ interface FormValues {
     title: string;
     VideoUrl: FileList; // Change to FileList for multiple files or File for a single file
     isAgeRestricted: boolean;
-    tags: string[];
+    tags: string;
     thumbnail: FileList; // Change to FileList for multiple files or File for a single file
-
-    userId:number
+    userId: string;
 
 }
 
@@ -29,35 +29,54 @@ export default function CreateVideoForm() {
 
     const router = useRouter();
 
-    const { clickVideoCreate, setClickVideoCreate,userData,setUserData,isLoggedIn,setIsLoggedIn } = useContext(AppContext);
+    const {
 
+        clickVideoCreate,
+        setClickVideoCreate, userData,
+        setUserData, isLoggedIn,
+        setIsLoggedIn
 
-    // console.log("userId is ",userData);
+    }
+        = useContext(AppContext);
+
 
     const { register, handleSubmit } = useForm<FormValues>();
 
     const onSubmit = async (data: FormValues) => {
 
-        if(!isLoggedIn){
+        // check the user is logged in or not 
+
+        if (!isLoggedIn) {
+
+            toast.error("you are not logged in")
 
             router.push("/signin");
 
         }
-        
+
+        console.log("new videon form ",data);
+
+
+        // create a new form and append form values to it 
 
         const formData = new FormData();
         formData.append('description', data.description);
         formData.append('title', data.title);
-        formData.append("userId",userData.id);
+        formData.append("userId", userData?.data?.id);
+        formData.append("tags", data.tags);
         formData.append('isAgeRestricted', data.isAgeRestricted.toString());
         data.VideoUrl[0] && formData.append('VideoUrl', data.VideoUrl[0]);
         data.thumbnail[0] && formData.append('thumbnail', data.thumbnail[0]);
 
         try {
 
-            const response = await createNewVideo(formData,);
+            const response = await createNewVideo(formData);
+
+            toast.success("new video is created successfully");
 
             console.log('Response from server:', response);
+
+            router.back();
 
         } catch (error) {
 
@@ -89,13 +108,25 @@ export default function CreateVideoForm() {
                 </div>
 
                 <div className="rounded-2xl flex justify-center items-center p-3">
-                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-[400px] h-[400px]"> {/* Pass onSubmit function to handleSubmit */}
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-[500px] h-[400px]"> {/* Pass onSubmit function to handleSubmit */}
                         <div className="border-2 rounded-xl">
                             <input
                                 {...register("title")}
                                 placeholder="Enter the title for the video "
                                 className="p-2 w-full rounded-xl bg-black font-bold outline-2 text-white"
                             />
+                        </div>
+
+                        <div className="border-2 rounded-xl">
+
+                            <input
+                                {...register("tags")}
+
+                                placeholder="Enter the tags for the video  "
+                                className="p-2 w-full rounded-xl bg-black font-bold outline-2 text-white"
+                            />
+
                         </div>
                         <div className="rounded-xl h-auto">
                             <textarea

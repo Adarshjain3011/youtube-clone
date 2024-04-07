@@ -52,8 +52,7 @@ export async function createNewVideo(body: any) {
         console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId,tags);
 
 
-        // find current user 
-
+        // find the current user 
 
         const existingUser = await client.user.findFirst({
 
@@ -68,24 +67,28 @@ export async function createNewVideo(body: any) {
 
         console.log("existing user ", existingUser);
 
+        let videoUrl: string;
 
+        let duartion:string;
+
+        let thumbnailUrl:string;
+
+        let videoDuration:string;
 
 
         // now we to upload the video and thumbnail to cloudinary to get its url 
 
         // =================uploading thumbanail and video ==========================
 
-        let videoUrl = await ImageUploader(VideoUrl);
+        let response:any = await ImageUploader(VideoUrl);
 
-        videoUrl = videoUrl as string;
+        videoUrl = response?.secure_url;
 
-        let thumbnailUrl = await ImageUploader(thumbnail);
+        videoDuration = response?.duartion;
 
-        thumbnailUrl = thumbnailUrl as string;
+        let response2:any = await ImageUploader(thumbnail);
 
-        let vurl: string = videoUrl?.secure_url || "";
-
-        let thumburl: string = thumbnailUrl?.secure_url || "";
+        thumbnailUrl = response2.secure_url;
 
         // ===================================================================
 
@@ -95,11 +98,9 @@ export async function createNewVideo(body: any) {
 
         let newDescription: string = description || "";
 
-        let pk = existingUser?.id || 123 as number;
+        videoDuration = formatDuration(videoDuration);
 
-        console.log("duration of video ", videoUrl.duration);
-
-        let videoDuration: string = formatDuration(videoUrl?.duration);
+        let allTags = tags.split(",");
 
         // now we to create the new video data 
 
@@ -108,11 +109,12 @@ export async function createNewVideo(body: any) {
             duration: videoDuration,
             title: newTitle,
             description: newDescription,
+            tags:allTags,
             isAgeRestricted: age,
-            url: vurl,
-            thumbnail: thumburl,
-            userId: pk as number
-
+            url: videoUrl,
+            thumbnail: thumbnailUrl,
+            userId:userId,
+            
         }
 
         // create the new video 
@@ -122,14 +124,13 @@ export async function createNewVideo(body: any) {
         console.log("new video in db", newVideo);
 
 
-
         // update exitingUser with the new video which is created by user  
 
         const upadtedUser = await client.user.update({
 
             where: { id: userId },
             data: {
-                authoredVideos: {
+                videos: {
 
                     connect: [{ id: newVideo.id }], // Push the newly created video into the authoredVideos array
 
@@ -143,7 +144,7 @@ export async function createNewVideo(body: any) {
 
             status: "200",
             message: "video is created successfully",
-            upadtedUser,
+            data:upadtedUser,
 
         }
 
