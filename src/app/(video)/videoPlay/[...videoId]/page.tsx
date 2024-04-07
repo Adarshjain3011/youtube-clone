@@ -20,7 +20,7 @@ import { likeDislike_LikeHandler, likeDislike_DislikeHandler } from "@/app/actio
 
 import { createViews } from "@/app/actions/views"
 
-import {getTime} from "@/helpers/getTimeFromDate";
+import { getTime } from "@/helpers/getTimeFromDate";
 
 
 export default function VideoPlay() {
@@ -121,16 +121,16 @@ export default function VideoPlay() {
 
     async function likeHandler() {
 
-        
-        
-        
+
+
+
         try {
 
             const videoId: string = window.location.pathname.split("/").pop();
-            
+
             console.log("like handler ke andar ", videoId);
 
-            const userId:string = userData.data.id;
+            const userId: string = userData.data.id;
 
             console.log("User ID:", userId);
 
@@ -167,16 +167,16 @@ export default function VideoPlay() {
 
     async function dislikeHandler() {
 
-        
+
         try {
 
             console.log("dislike video handler ke andar ");
 
             const videoId: string = window.location.pathname.split("/").pop();
-            
+
             console.log("videoId ", videoId);
 
-            const userId:string = userData.data.id;
+            const userId: string = userData.data.id;
 
             console.log("User ID:", userId);
 
@@ -413,7 +413,22 @@ export default function VideoPlay() {
 
                                 <p className="font-bold text-white/75 text-sm">{currentPlayingVideo?.viewsCount} views</p>
                                 <p className="font-bold text-white/75 text-sm">{getTime(currentPlayingVideo?.createdAt)}</p>
-                                <p className="font-medium text-blue-600 text-sm">#IRAN #PAKISTAN #INDIA</p>
+
+                                <div className="flex gap-1">
+
+                                    {
+
+                                        currentPlayingVideo?.tags?.map((data:any)=>(
+
+
+                                            <p className="font-medium text-blue-600 text-sm">#{data} </p>
+
+                                        ))
+
+                                    }
+
+                                </div>
+
 
                             </div>
 

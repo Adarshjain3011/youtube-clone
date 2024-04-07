@@ -19,7 +19,7 @@ export default function CommonVideoTemplate({ videoUrl }: Props) {
             <video
                 controls
                 autoPlay
-                className="relative w-full h-full bg-cover"
+                className="relative w-full h-full bg-cover rounded-md"
                 style={{ width: "100%", height: "100%" }}
             >
                 <source src={videoUrl} type="video/mp4" className="w-full h-full bg-cover" />

@@ -95,7 +95,7 @@ export function VideoDisplayReal() {
         }
     }
 
-    
+
 
     function handleClickOutside(event: any) {
 
@@ -212,11 +212,11 @@ export function VideoDisplayReal() {
 
         <div className="relative w-full  mt-28 bg-black ">
 
-            <div className={`relative flex flex-wrap w-full justify-start items-start p-3 gap-4 `}>
+            <div className={`relative flex flex-wrap w-full gap-2 `}>
 
                 {allVideos?.map((data: any, index: any) => (
 
-                    <div className={`flex relative flex-col gap-2 mb-11 ${threeLineButtonCliked === false ? "pl-1" : "pl-6"}`}>
+                    <div className={`flex relative flex-col rounded-md  gap-2 mb-11 ${threeLineButtonCliked === false ? "" : "pl-6"}`}>
 
                         <div className={`realtive`} key={data.id}
 
@@ -226,13 +226,20 @@ export function VideoDisplayReal() {
 
                             onClick={() => moveToVideoPlayPage(data)}
 
-                        >router.push(`/videoPlay/${data.id}`)
+                        >
                             {hoveredVideoIndex === index ? (
 
-                                <div className={`rounded-xl ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px] "} `}>
+                                <div className={`rounded-md ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px] "} `}>
 
 
-                                    <Video videoUrl={data.url}/>
+                                    <video
+                                        controls
+                                        className="relative w-full h-full bg-cover rounded-md"
+                                        style={{ width: "100%", height: "100%" }}
+                                    >
+                                        <source src={data?.url} type="video/mp4" />
+
+                                    </video>
 
 
                                 </div>
@@ -240,11 +247,11 @@ export function VideoDisplayReal() {
 
                             ) : (
 
-                                <div className={`rounded-xl ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px]"} `}
+                                <div className={`rounded-md ${threeLineButtonCliked === false ? "w-[260px] h-[160px]" : "w-[300px] h-[200px]"} `}
 
                                 >
 
-                                    <img src={data.thumbnail} alt="" className="w-full h-full bg-cover rounded-xl"
+                                    <img src={data.thumbnail} alt="" className="w-full h-full bg-cover rounded-md"
 
                                         onMouseOver={() => handleMouseEnter(index)}
                                         onMouseLeave={() => setHoveredVideoIndex(-1)} />
@@ -255,7 +262,7 @@ export function VideoDisplayReal() {
 
                             {hoveredVideoIndex !== index && (
 
-                                <div className={`bg-black inline-block absolute right-1 rounded-md bottom-[73px] ${threeLineButtonCliked === false ? "right-7" : "right-1"}`}>
+                                <div className={`bg-black inline-block absolute right-1 rounded-md bottom-[73px] ${threeLineButtonCliked === false ? "right-2" : "right-1"}`}>
 
                                     <p className="text-white text-sm">{data?.duration}</p>
 
@@ -268,9 +275,9 @@ export function VideoDisplayReal() {
                         {horizontalThreeButtonCliked === index && (
 
 
-                            <div  className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
+                            <div className="w-[150px] bg-slate-800 flex flex-col gap-2 absolute right-[-70px] bottom-[-30px] rounded-xl z-40">
 
-                                <WatchLaterButton videoId={data.id} isLoggedIn = {isLoggedIn} userId = {userData.data.id}/>
+                                <WatchLaterButton videoId={data.id} isLoggedIn={isLoggedIn} userId={userData.data.id} />
 
 
                                 {/* when the vertical button clcicked */}
@@ -349,11 +356,11 @@ export function VideoDisplayReal() {
 
                         )}
 
-                        <div className="flex justify-between">
+                        <div className={`relative flex  w-full` }>
 
-                            <div className="flex gap-2 w-full">
+                            <div className="relative flex gap-2 w-[90%]">
 
-                                <div className={`rounded-full flex justify-center items-center w-[20px] h-[20px]`}>
+                                <div className={`rounded-full relative flex justify-center items-center w-[30px] h-[30px]`}>
 
                                     <img src={data?.user?.profileImage} alt="" className="rounded-full bg-cover w-full h-full" />
 
@@ -361,11 +368,11 @@ export function VideoDisplayReal() {
 
                                 <div className="flex flex-col gap-1">
 
-                                    <p className="font-bold text-[12px] text-white w-[220px]">{data.title}</p>
+                                    <p className="font-bold text-[12px] text-white w-[190px] text-wrap">{data.title}</p>
 
                                     <div className="flex flex-col">
 
-                                        <h1 className="text-white/45 capitalize">{data?.user?.name}</h1>
+                                        <h1 className="text-white/45 capitalize text-xs">{data?.user?.name}</h1>
 
                                         <p className="text-xs capitalize text-white/45">{data.viewsCount} views . {getTime(data?.createdAt)}</p>
 
@@ -376,8 +383,8 @@ export function VideoDisplayReal() {
                             </div>
 
 
-
-                            <div>
+                            
+                            <div className="flex w-[10%]">
 
                                 <navbar.PiDotsThreeOutlineVerticalFill className="text-white" onClick={() => setHorizontalThreeButtonCliked(index)}></navbar.PiDotsThreeOutlineVerticalFill>
 

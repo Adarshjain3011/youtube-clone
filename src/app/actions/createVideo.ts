@@ -193,6 +193,7 @@ export async function getAllVideo() {
 
                         id: true,
                         name: true,
+                        profileImage:true,
 
                     }
                 }
