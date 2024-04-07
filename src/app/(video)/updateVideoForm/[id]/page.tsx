@@ -87,6 +87,8 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
             console.log('Response from server:', response);
 
             setCurrentPlayingVideo(response?.data);
+
+            router.back();
             
 
         } catch (error) {
