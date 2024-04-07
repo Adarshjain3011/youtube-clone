@@ -20,7 +20,6 @@ interface FormValues {
     isAgeRestricted?: boolean;
     tags?: string;
     thumbnail?: FileList; // Change to FileList for multiple files or File for a single file
-
     userId?:number
 
 }

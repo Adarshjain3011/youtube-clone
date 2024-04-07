@@ -513,43 +513,44 @@ export async function UpdateVideo(body: any) {
 
         // =================uploading thumbanail and video ==========================
 
-        let videoUrl;
-        let vurl:string;
-        let thumbnailUrl;
-        let thumburl;
-        let videoDuration: string;
+        let newVideoUrl:string; // this respresent to newly uploaded video 
+        // let previousVideoUrl:string; // when there is no change in the video 
+        let newThumbnailUrl:any;
+        // let previousThumburl:string;
+        let newVideoDuration: string;
 
-
+        // check if video is not updated 
 
         if (isVideoExists.url === VideoUrl) {
 
-            vurl = VideoUrl;
-            
-            videoDuration = duration;
+            newVideoUrl = VideoUrl as string;
+            newVideoDuration = duration;
 
         }
         else {
 
-            let videoUrl = await ImageUploader(VideoUrl);
+            let response:any = await ImageUploader(VideoUrl);
 
-            videoUrl = videoUrl as string;
+            newVideoUrl = response?.secure_url;
 
-            vurl = videoUrl.secure_url || "";
-
+            newVideoDuration = response?.duration;
+            
         }
+
+        // check if thumbnail of the video is updated  or not 
 
         if (isVideoExists.thumbnail === thumbnail) {
 
-            thumburl = thumbnail as string;
+            previousThumburl = thumbnail;
 
         }
         else {
 
-            let thumbnailUrl = await ImageUploader(thumbnail);
+            newThumbnailUrl = await ImageUploader(thumbnail);
 
-            thumburl = thumbnailUrl?.secure_url || "";
+            newThumbnailUrl = newThumbnailUrl?.secure_url || "";
 
-            thumbnailUrl = thumbnailUrl as string;
+            newThumbnailUrl = newThumbnailUrl as string;
 
         }
 
@@ -563,9 +564,6 @@ export async function UpdateVideo(body: any) {
         let newDescription: string = description || "";
 
         let pk = existingUser?.id ;
-
-        console.log("duration of video ", videoUrl.duration);
-
 
 
         // now we to create the new video data 
@@ -642,7 +640,7 @@ export async function UpdateVideo(body: any) {
 
 
 
-// search videos by text 
+// s
 
 
 export async function searchVideos(text: string) {
