@@ -54,13 +54,13 @@ export async function createNewVideo(body: any) {
 
         // find current user 
 
-        let newId: string = userId;
 
         const existingUser = await client.user.findFirst({
 
             where: {
 
-                id: newId, // Replace with the email address you want to use
+                id: userId, // Replace with the email address you want to use
+
             },
 
         });
@@ -127,7 +127,7 @@ export async function createNewVideo(body: any) {
 
         const upadtedUser = await client.user.update({
 
-            where: { id: newId },
+            where: { id: userId },
             data: {
                 authoredVideos: {
 
@@ -460,6 +460,10 @@ export async function UpdateVideo(body: any) {
 
         // convert the data into JSON fromat 
 
+        console.log("upadte video ke andar")
+
+        console.log("body ka data ",body);
+
         const { title, thumbnail, VideoUrl, isAgeRestricted, description, userId, videoId,tags } = formToJSON(body);
 
         console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId,tags);
@@ -576,9 +580,9 @@ export async function UpdateVideo(body: any) {
 
         console.log("all tags are " , allTag);
 
+    //========================================================================  = 
 
-
-        // now we to create the new video data 
+        // now we form to upadte the video 
 
         const videoData = {
 
@@ -587,45 +591,42 @@ export async function UpdateVideo(body: any) {
             description: newDescription,
             isAgeRestricted: age,
             url: newVideoUrl,
+            tags:allTag,
             thumbnail: newThumbnailUrl,
             userId: currentUserId
 
         }
 
         console.log("video data is ",videoData);
+
         
         
-        
-        // update exitingUser with the new video which is created by user  
+        // update the video 
 
+        const updatedVideo = await client.video.update({
 
-        // const updateVideo = await client.video.update({
+            where:{
 
-        //     where:{
+                 id: videoId,
+                 userId:userId,
 
-        //          id: videoId,
-        //          userId:userId,
+            },
+            data:videoData,
 
-        //     },
+        })
 
-
-        // })
-
-
-
-        // console.log("updated user", upadtedUser);
-
-        // let responseData: any = {
-
-        //     status: "200",
-        //     message: "video is created successfully",
-        //     upadtedUser,
-
-        // }
+        console.log("newly updated video",updatedVideo);
 
         // successfully return the resposne 
 
-        // return responseData;
+        return {
+
+            status:200,
+            message:"video updated sucessfully ",
+            data:updatedVideo,
+
+        }
+
 
     }
 

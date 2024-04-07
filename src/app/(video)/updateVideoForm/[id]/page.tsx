@@ -18,26 +18,31 @@ import { useState } from "react";
 
 import { getVideoById,UpdateVideo } from "@/app/actions/createVideo";
 
+import toast from "react-hot-toast";
+
+
 interface FormValues {
 
     description?: string;
     title?: string;
-    VideoUrl?: FileList; // Change to FileList for multiple files or File for a single file
+    VideoUrl?: any  // Change to FileList for multiple files or File for a single file
     isAgeRestricted?: boolean;
     tags?: string;
-    thumbnail?: FileList; // Change to FileList for multiple files or File for a single file
-    userId?: string
+    thumbnail?: any // Change to FileList for multiple files or File for a single file
+    previousVideoUrl?: string;
+    previousThumbnailUrl?: string;
+    userId?: string,
+    videoId?: string
 
 }
+
+
 
 export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
     const router = useRouter();
 
-    
-    console.log("video id is ",params.id);
-
-    
+    let currentVideoPath:string = params.id; // getting video from url
 
     const { clickVideoCreate, setClickVideoCreate, userData, setUserData, isLoggedIn, setIsLoggedIn } = useContext(AppContext);
 
@@ -56,31 +61,33 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
     const onSubmit = async (data: FormValues) => {
 
-        // if (!isLoggedIn) {
-
-        //     router.push("/signin");
-
-        // }
-
-
-        console.log("data", data);
+        console.log("form data ", data);
 
         const formData = new FormData();
-        formData.append('description', data.description);
-        formData.append('title', data.title);
-        formData.append("userId", userData.id);
+
+        data.description !== "" ?(formData.append('description', data?.description)):(formData.append('description', currentPlayingVideo?.description));
+        data?.title !== "" ? (formData.append('title', data?.title)):(formData.append('title', currentPlayingVideo?.title));
+        formData.append("userId", userData?.data?.id);
+        formData.append("videoId", currentVideoPath);
+        data.tags !== ""?(formData.append("tags",data?.tags)):(formData.append("tags",currentPlayingVideo?.tags));
         formData.append('isAgeRestricted', data.isAgeRestricted.toString());
-        data.VideoUrl[0] && formData.append('VideoUrl', data.VideoUrl[0]);
-        data.thumbnail[0] && formData.append('thumbnail', data.thumbnail[0]);
+        data.VideoUrl[0]? (formData.append('VideoUrl', data.VideoUrl[0])):((formData.append('VideoUrl',currentPlayingVideo?.url )))
+        data.thumbnail[0]? (formData.append('thumbnail', data.thumbnail[0])):((formData.append('thumbnail',currentPlayingVideo?.thumbnail)))
 
 
         try {
 
             console.log("")
 
-            const response = await updateExistingVideo(formData,);
+            const response = await UpdateVideo(formData);
+
+
+            toast.success("video updated successfully");
 
             console.log('Response from server:', response);
+
+            setCurrentPlayingVideo(response?.data);
+            
 
         } catch (error) {
 
