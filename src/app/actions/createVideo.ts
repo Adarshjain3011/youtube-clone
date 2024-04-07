@@ -514,15 +514,17 @@ export async function UpdateVideo(body: any) {
         // =================uploading thumbanail and video ==========================
 
         let videoUrl;
-        let vurl;
+        let vurl:string;
         let thumbnailUrl;
         let thumburl;
         let videoDuration: string;
 
 
+
         if (isVideoExists.url === VideoUrl) {
 
-            vurl = VideoUrl as string;
+            vurl = VideoUrl;
+            
             videoDuration = duration;
 
         }
