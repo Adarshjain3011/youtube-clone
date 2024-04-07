@@ -8,7 +8,7 @@ import { any, boolean, string } from "zod";
 import { ImageUploader } from "@/helpers/ImageUploader";
 
 import { number } from "zod";
-import { duration } from "moment";
+
 
 // import { currentUser } from "@clerk/nextjs";
 
@@ -467,13 +467,22 @@ export async function UpdateVideo(body: any) {
 
         // find current user 
 
-        let newId: string = userId;
+        if(!videoId || !userId ){
+
+
+            return {
+
+                status:400,
+                message:"all fields are not fullfilled "
+                
+            }
+        }
 
         const existingUser = await client.user.findFirst({
 
             where: {
 
-                id: newId, // Replace with the email address you want to use
+                id: userId, // Replace with the email address you want to use
             },
 
         });
@@ -513,10 +522,8 @@ export async function UpdateVideo(body: any) {
 
         // =================uploading thumbanail and video ==========================
 
-        let newVideoUrl:string; // this respresent to newly uploaded video 
-        // let previousVideoUrl:string; // when there is no change in the video 
-        let newThumbnailUrl:any;
-        // let previousThumburl:string;
+        let newVideoUrl:string; 
+        let newThumbnailUrl:string;
         let newVideoDuration: string;
 
         // check if video is not updated 
@@ -524,7 +531,7 @@ export async function UpdateVideo(body: any) {
         if (isVideoExists.url === VideoUrl) {
 
             newVideoUrl = VideoUrl as string;
-            newVideoDuration = duration;
+            newVideoDuration = isVideoExists?.duration;
 
         }
         else {
@@ -541,16 +548,14 @@ export async function UpdateVideo(body: any) {
 
         if (isVideoExists.thumbnail === thumbnail) {
 
-            previousThumburl = thumbnail;
+            newThumbnailUrl = thumbnail;
 
         }
         else {
 
-            newThumbnailUrl = await ImageUploader(thumbnail);
+            let response:any = await ImageUploader(thumbnail);
 
-            newThumbnailUrl = newThumbnailUrl?.secure_url || "";
-
-            newThumbnailUrl = newThumbnailUrl as string;
+            newThumbnailUrl = response?.secure_url;
 
         }
 
@@ -563,58 +568,54 @@ export async function UpdateVideo(body: any) {
 
         let newDescription: string = description || "";
 
-        let pk = existingUser?.id ;
+        let currentUserId = existingUser?.id ;
 
 
         // now we to create the new video data 
 
         const videoData = {
 
-            duration: videoDuration,
+            duration: newVideoDuration,
             title: newTitle,
             description: newDescription,
             isAgeRestricted: age,
-            url: vurl,
-            thumbnail: thumburl,
-            userId: pk as number
+            url: newVideoUrl,
+            thumbnail: newThumbnailUrl,
+            userId: currentUserId
 
         }
-
-        // create the new video 
-
-        const newVideo = await client.video.create({ data: videoData });
-
-        console.log("new video in db", newVideo);
-
-
-
+        
+        
         // update exitingUser with the new video which is created by user  
 
-        const upadtedUser = await client.user.update({
 
-            where: { id: newId },
-            data: {
-                authoredVideos: {
+        const updateVideo = await client.video.update({
 
-                    connect: [{ id: newVideo.id }], // Push the newly created video into the authoredVideos array
+            where:{
 
-                },
+                 id: videoId,
+                 userId:userId,
+
             },
-        });
 
-        console.log("updated user", upadtedUser);
 
-        let responseData: any = {
+        })
 
-            status: "200",
-            message: "video is created successfully",
-            upadtedUser,
 
-        }
+
+        // console.log("updated user", upadtedUser);
+
+        // let responseData: any = {
+
+        //     status: "200",
+        //     message: "video is created successfully",
+        //     upadtedUser,
+
+        // }
 
         // successfully return the resposne 
 
-        return responseData;
+        // return responseData;
 
     }
 
@@ -626,7 +627,7 @@ export async function UpdateVideo(body: any) {
         let responseData: any = {
 
             status: "400",
-            message: "some error occur while creating the video ",
+            message: "some error occur while updating the  the video ",
             error: error.message,
 
         };
@@ -640,7 +641,7 @@ export async function UpdateVideo(body: any) {
 
 
 
-// s
+// search the video by using text 
 
 
 export async function searchVideos(text: string) {
