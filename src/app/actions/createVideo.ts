@@ -399,11 +399,12 @@ export async function getAllUserVideos(userId: string) {
     try {
 
 
+
         const AllVideos = await client.video.findMany({
 
             where: {
 
-                id: userId,
+                userId:userId,
 
             }
         })

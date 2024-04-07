@@ -51,9 +51,11 @@ export default function commonVideoCompo() {
 
                 console.log("get all videos ke andar ");
 
-                console.log("user id is ", userData.id);
+                console.log("user id is ", userData?.data?.id);
 
-                const response = await getAllUserVideos(userData.id);
+                let userId = userData?.data?.id;
+
+                const response = await getAllUserVideos(userId);
 
                 console.log(response?.data);
 
@@ -108,13 +110,6 @@ export default function commonVideoCompo() {
 
     function moveToVideoUpdateHandler(id: string){
 
-
-        // router.push({
-
-        //     pathname:"/updateVideoForm",
-        //     query:{ data: data },
-
-        // })
 
 
         console.log(id);
