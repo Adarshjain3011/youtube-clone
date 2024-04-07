@@ -47,9 +47,9 @@ export async function createNewVideo(body: any) {
 
         // convert the data into JSON fromat 
 
-        const { title, thumbnail, VideoUrl, isAgeRestricted, description, userId } = formToJSON(body);
+        const { title, thumbnail, VideoUrl, isAgeRestricted, description, userId,tags } = formToJSON(body);
 
-        console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId);
+        console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId,tags);
 
 
         // find current user 
@@ -460,9 +460,9 @@ export async function UpdateVideo(body: any) {
 
         // convert the data into JSON fromat 
 
-        const { title, thumbnail, VideoUrl, isAgeRestricted, description, userId, videoId } = formToJSON(body);
+        const { title, thumbnail, VideoUrl, isAgeRestricted, description, userId, videoId,tags } = formToJSON(body);
 
-        console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId);
+        console.log(title, thumbnail, VideoUrl, isAgeRestricted, description, userId,tags);
 
 
         // find current user 
@@ -560,7 +560,7 @@ export async function UpdateVideo(body: any) {
 
         let newDescription: string = description || "";
 
-        let pk = existingUser?.id || 123 as number;
+        let pk = existingUser?.id ;
 
         console.log("duration of video ", videoUrl.duration);
 
@@ -638,6 +638,9 @@ export async function UpdateVideo(body: any) {
 
 
 
+
+
+// search videos by text 
 
 
 export async function searchVideos(text: string) {

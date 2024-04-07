@@ -18,7 +18,7 @@ interface FormValues {
     title?: string;
     VideoUrl?: FileList; // Change to FileList for multiple files or File for a single file
     isAgeRestricted?: boolean;
-    tags?: string[];
+    tags?: string;
     thumbnail?: FileList; // Change to FileList for multiple files or File for a single file
 
     userId?:number

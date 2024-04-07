@@ -16,7 +16,7 @@ import { FaImage } from "react-icons/fa6";
 
 import { useState } from "react";
 
-import { getVideoById } from "@/app/actions/createVideo";
+import { getVideoById,UpdateVideo } from "@/app/actions/createVideo";
 
 interface FormValues {
 
@@ -24,7 +24,7 @@ interface FormValues {
     title?: string;
     VideoUrl?: FileList; // Change to FileList for multiple files or File for a single file
     isAgeRestricted?: boolean;
-    tags?: string[];
+    tags?: string;
     thumbnail?: FileList; // Change to FileList for multiple files or File for a single file
     userId?: string
 
@@ -52,6 +52,8 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
     const { register, handleSubmit } = useForm<FormValues>();
 
+
+
     const onSubmit = async (data: FormValues) => {
 
         // if (!isLoggedIn) {
@@ -76,9 +78,9 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
             console.log("")
 
-            // const response = await updateExistingVideo(formData,);
+            const response = await updateExistingVideo(formData,);
 
-            // console.log('Response from server:', response);
+            console.log('Response from server:', response);
 
         } catch (error) {
 
@@ -86,6 +88,9 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
 
         }
     };
+
+
+    //  handler fro change in thumabnail
 
 
     const handleThumbnailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +110,9 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
         }
 
     };
+
+
+    // handler for change in video 
 
 
     const handleVideoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,6 +169,7 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
         }
 
     }
+
 
     useEffect(()=>{
 

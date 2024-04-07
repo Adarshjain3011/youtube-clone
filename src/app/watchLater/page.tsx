@@ -1,7 +1,7 @@
 
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {getAllUserSpecificWatchLater,deleteWatchLaterVideos} from "@/app/actions/watchLater";
 
@@ -14,9 +14,38 @@ export default function WatchLater(){
 
     const {
 
-        
+        userData, setUserData
 
     } = useContext(AppContext);
+
+
+    async function getAllWatchLaterData(){
+
+        try{
+
+            let userId:string = userData?.data?.id;
+
+            console.log("userId id is ",userId);
+
+            const response = await getAllUserSpecificWatchLater(userId);
+
+            console.log("reposne ka data watch later ke andar ",response.data);
+
+
+        }catch(error:any){
+
+            console.log(error.message);
+
+        }
+
+    }
+
+
+    useEffect(()=>{
+
+        getAllWatchLaterData();
+
+    },[]);
 
     return (
 
@@ -27,5 +56,9 @@ export default function WatchLater(){
         </div>
     )
 }
+
+
+
+
 
 

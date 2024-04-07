@@ -72,6 +72,9 @@ export function SideBar() {
             label: 'watch Later',
             func: () => {
                 // Define functionality here
+
+                router.push("/watchLater");
+                
             }
         },
 
