@@ -99,7 +99,7 @@ export default function CreateVideoForm({ params }:{params:{id:string}}) {
     };
 
 
-    //  handler fro change in thumabnail
+    //  handler change in thumabnail
 
 
     const handleThumbnailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
