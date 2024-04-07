@@ -474,9 +474,11 @@ export async function UpdateVideo(body: any) {
 
                 status:400,
                 message:"all fields are not fullfilled "
-                
+
             }
         }
+
+        // check the user exists or not 
 
         const existingUser = await client.user.findFirst({
 
@@ -570,6 +572,11 @@ export async function UpdateVideo(body: any) {
 
         let currentUserId = existingUser?.id ;
 
+        let allTag = tags.split(',');
+
+        console.log("all tags are " , allTag);
+
+
 
         // now we to create the new video data 
 
@@ -584,22 +591,25 @@ export async function UpdateVideo(body: any) {
             userId: currentUserId
 
         }
+
+        console.log("video data is ",videoData);
+        
         
         
         // update exitingUser with the new video which is created by user  
 
 
-        const updateVideo = await client.video.update({
+        // const updateVideo = await client.video.update({
 
-            where:{
+        //     where:{
 
-                 id: videoId,
-                 userId:userId,
+        //          id: videoId,
+        //          userId:userId,
 
-            },
+        //     },
 
 
-        })
+        // })
 
 
 
